@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BCSO — Blaine County Sheriff's Office</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:      #08111E;
+    --navy-mid:  #0F1F35;
+    --navy-card: #152540;
+    --navy-border: #1E3254;
+    --gold:      #C6922A;
+    --gold-light:#E8B84B;
+    --gold-dim:  #8A6520;
+    --text:      #DCE6F0;
+    --text-muted:#6E88A8;
+    --red:       #9E2222;
+    --red-light: #C13030;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(8,17,30,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--navy-border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    height: 60px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--gold-light);
+    text-decoration: none;
+  }
+  .nav-star { font-size: 1.3rem; }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-apply {
+    background: var(--gold);
+    color: var(--navy) !important;
+    padding: 6px 16px; border-radius: 3px;
+    font-weight: 700 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-apply:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
+
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--text); font-size: 1.4rem; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 100px 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(198,146,42,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid-lines {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.04;
+    background-image:
+      linear-gradient(var(--gold) 1px, transparent 1px),
+      linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .badge-wrap {
+    width: 160px; height: 160px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 2rem;
+    position: relative;
+  }
+  .badge-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: 1px solid rgba(198,146,42,0.3);
+    animation: pulse-ring 3s ease-in-out infinite;
+  }
+  .badge-ring:nth-child(2) { inset: -12px; animation-delay: 0.8s; opacity: 0.5; }
+  @keyframes pulse-ring { 0%,100%{ opacity:0.3; transform:scale(1); } 50%{ opacity:0.8; transform:scale(1.04); } }
+
+  .star-svg { width: 120px; height: 120px; filter: drop-shadow(0 0 18px rgba(198,146,42,0.5)); }
+
+  .hero-eyebrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .hero-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 700; letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .hero-title span { color: var(--gold-light); }
+  .hero-subtitle {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem; letter-spacing: 0.2em; font-weight: 500;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 2.5rem;
+  }
+  .hero-motto {
+    font-family: 'Inter', sans-serif;
+    font-style: italic; font-size: 1.05rem;
+    color: var(--text-muted); max-width: 500px;
+    margin: 0 auto 2.5rem;
+    border-left: 2px solid var(--gold-dim);
+    padding-left: 1rem; text-align: left;
+  }
+  .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: var(--navy);
+    padding: 12px 32px; border-radius: 3px;
+    font-family: 'Oswald', sans-serif; font-size: 0.95rem;
+    font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    padding: 12px 32px; border-radius: 3px;
+    border: 1px solid var(--navy-border);
+    font-family: 'Oswald', sans-serif; font-size: 0.95rem;
+    font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--gold-dim); color: var(--gold-light); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 4rem; padding-top: 2rem;
+    border-top: 1px solid var(--navy-border);
+    width: 100%; max-width: 600px;
+  }
+  .stat-item { text-align: center; }
+  .stat-num { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--gold-light); }
+  .stat-label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--navy-border), transparent);
+    max-width: 1100px; margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700;
+    color: #fff; margin-bottom: 1rem; letter-spacing: 0.02em;
+  }
+  .section-lead { color: var(--text-muted); max-width: 600px; font-size: 1.02rem; }
+
+  /* ── ABOUT ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; }
+  .about-text p { color: var(--text-muted); margin-bottom: 1rem; }
+  .about-pillars { display: grid; gap: 1rem; }
+  .pillar-card {
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: 4px; padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--gold);
+  }
+  .pillar-title { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; color: var(--gold-light); margin-bottom: 0.3rem; letter-spacing: 0.05em; }
+  .pillar-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── RANKS ── */
+  .ranks-section { background: var(--navy-mid); padding: 5rem 2rem; }
+  .ranks-inner { max-width: 1100px; margin: 0 auto; }
+  .ranks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+  .rank-card {
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: 4px; padding: 1.25rem;
+    display: flex; flex-direction: column; gap: 0.5rem;
+    transition: border-color 0.2s;
+  }
+  .rank-card:hover { border-color: var(--gold-dim); }
+  .rank-badge {
+    width: 36px; height: 36px; background: var(--navy-border);
+    border-radius: 3px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.05em; color: var(--gold);
+  }
+  .rank-badge.command { background: rgba(198,146,42,0.15); color: var(--gold-light); }
+  .rank-name { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; color: #fff; }
+  .rank-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+  /* ── ROSTER ── */
+  .roster-wrap { margin-top: 2.5rem; overflow-x: auto; }
+  .roster-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .roster-table th {
+    background: var(--navy-card);
+    font-family: 'Rajdhani', sans-serif; font-weight: 700;
+    letter-spacing: 0.15em; font-size: 0.75rem; text-transform: uppercase;
+    color: var(--gold); padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--navy-border);
+  }
+  .roster-table td {
+    padding: 12px 16px; border-bottom: 1px solid rgba(30,50,84,0.5);
+    color: var(--text-muted);
+  }
+  .roster-table tr:hover td { background: var(--navy-card); }
+  .badge-rank {
+    display: inline-block; padding: 2px 8px; border-radius: 2px;
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.75rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .badge-command { background: rgba(198,146,42,0.15); color: var(--gold-light); }
+  .badge-senior  { background: rgba(30,50,84,0.8); color: #7EA3CC; border: 1px solid var(--navy-border); }
+  .badge-patrol  { background: rgba(15,31,53,0.8); color: var(--text-muted); border: 1px solid var(--navy-border); }
+  .badge-status-active { color: #4CAF82; font-size: 0.75rem; font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 0.1em; }
+  .badge-status-loa    { color: var(--gold-dim); font-size: 0.75rem; font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 0.1em; }
+
+  /* ── SOP / RULES ── */
+  .rules-section { background: var(--navy-mid); padding: 5rem 2rem; }
+  .rules-inner { max-width: 1100px; margin: 0 auto; }
+  .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem; }
+  .rule-block {
+    background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: 4px; padding: 1.5rem;
+  }
+  .rule-num { font-family: 'Oswald', sans-serif; font-size: 0.75rem; color: var(--gold-dim); font-weight: 700; letter-spacing: 0.2em; margin-bottom: 0.4rem; }
+  .rule-title { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 0.5rem; }
+  .rule-items { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .rule-items li { font-size: 0.875rem; color: var(--text-muted); padding-left: 1rem; position: relative; }
+  .rule-items li::before { content: '—'; position: absolute; left: 0; color: var(--gold-dim); }
+
+  /* ── APPLICATION ── */
+  .app-wrap { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; margin-top: 3rem; }
+  .app-info h3 { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--gold-light); margin-bottom: 0.75rem; }
+  .app-info p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .req-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .req-list li { font-size: 0.875rem; color: var(--text-muted); display: flex; gap: 0.6rem; }
+  .req-list li::before { content: '✓'; color: var(--gold); flex-shrink: 0; }
+
+  .app-form { display: flex; flex-direction: column; gap: 1.1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .field label {
+    display: block; font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%; background: var(--navy-card); border: 1px solid var(--navy-border);
+    border-radius: 3px; padding: 10px 14px; color: var(--text);
+    font-family: 'Inter', sans-serif; font-size: 0.9rem;
+    transition: border-color 0.2s; outline: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--gold-dim);
+  }
+  .field select option { background: var(--navy-mid); }
+  .field textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    background: var(--gold); color: var(--navy);
+    border: none; border-radius: 3px; padding: 13px 0; width: 100%;
+    font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .form-submit:hover { background: var(--gold-light); }
+  .form-success {
+    display: none; text-align: center; padding: 2rem;
+    background: var(--navy-card); border: 1px solid rgba(76,175,130,0.3);
+    border-radius: 4px; color: #4CAF82;
+    font-family: 'Oswald', sans-serif; font-size: 1.1rem;
+  }
+
+  /* ── COMMUNITY ── */
+  .community-section { background: var(--navy-mid); padding: 5rem 2rem; text-align: center; }
+  .community-inner { max-width: 700px; margin: 0 auto; }
+  .discord-card {
+    background: #5865F2; border-radius: 8px; padding: 2.5rem;
+    margin-top: 2.5rem; display: flex; align-items: center;
+    gap: 2rem; text-align: left; flex-wrap: wrap;
+  }
+  .discord-logo { font-size: 3rem; }
+  .discord-text h3 { font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+  .discord-text p { color: rgba(255,255,255,0.8); font-size: 0.9rem; }
+  .discord-btn {
+    background: #fff; color: #5865F2;
+    padding: 12px 28px; border-radius: 4px;
+    font-family: 'Oswald', sans-serif; font-size: 0.95rem;
+    font-weight: 700; letter-spacing: 0.08em; text-decoration: none;
+    white-space: nowrap; margin-left: auto; transition: opacity 0.2s;
+  }
+  .discord-btn:hover { opacity: 0.85; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy); border-top: 1px solid var(--navy-border);
+    padding: 2.5rem 2rem; text-align: center;
+    font-size: 0.82rem; color: var(--text-muted);
+  }
+  footer span { color: var(--gold-dim); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 720px) {
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: var(--navy-mid); border-bottom: 1px solid var(--navy-border); padding: 1rem 2rem; gap: 1rem; }
+    .nav-links.open { display: flex; }
+    .nav-toggle { display: block; }
+    .about-grid, .rules-grid, .app-wrap, .form-row { grid-template-columns: 1fr; gap: 1.5rem; }
+    .hero-stats { gap: 1.5rem; }
+    .discord-card { flex-direction: column; text-align: center; }
+    .discord-btn { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-brand">
+    <span class="nav-star">★</span> BCSO
+  </a>
+  <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#ranks">Ranks</a></li>
+    <li><a href="#roster">Roster</a></li>
+    <li><a href="#sop">Rules & SOP</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#apply" class="nav-apply">Apply Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="max-width:none;">
+  <div class="hero-grid-lines"></div>
+  <div class="badge-wrap">
+    <div class="badge-ring"></div>
+    <div class="badge-ring"></div>
+    <svg class="star-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="sg" cx="50%" cy="45%" r="55%">
+          <stop offset="0%" stop-color="#E8B84B"/>
+          <stop offset="100%" stop-color="#8A6520"/>
+        </radialGradient>
+      </defs>
+      <polygon points="60,8 73,44 112,44 81,66 93,102 60,80 27,102 39,66 8,44 47,44"
+               fill="url(#sg)" stroke="#C6922A" stroke-width="1.5"/>
+      <circle cx="60" cy="60" r="18" fill="#0F1F35" stroke="#C6922A" stroke-width="1.5"/>
+      <text x="60" y="65" text-anchor="middle"
+            font-family="Oswald,sans-serif" font-size="11" font-weight="700"
+            fill="#C6922A" letter-spacing="1">BCSO</text>
+    </svg>
+  </div>
+
+  <p class="hero-eyebrow">Blaine County Sheriff's Office — FiveM</p>
+  <h1 class="hero-title">Protect.<br/><span>Serve.</span> Uphold.</h1>
+  <p class="hero-subtitle">San Andreas Roleplay &nbsp;·&nbsp; Law Enforcement Division</p>
+  <p class="hero-motto">"With courage, integrity, and dedication to the people of Blaine County."</p>
+
+  <div class="hero-ctas">
+    <a href="#apply" class="btn-primary">Apply to Join</a>
+    <a href="#about" class="btn-outline">Learn More</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">40+</div>
+      <div class="stat-label">Active Deputies</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">8</div>
+      <div class="stat-label">Divisions</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Patrol Coverage</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-eyebrow">Who We Are</p>
+  <h2 class="section-title">About the Department</h2>
+  <p class="section-lead">The Blaine County Sheriff's Office is a serious, semi-realistic law enforcement roleplay community built on professionalism, teamwork, and immersive gameplay.</p>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <p>We operate within one of San Andreas' most active FiveM servers, providing structured law enforcement roleplay across the entirety of Blaine County — from Sandy Shores to Paleto Bay. Our deputies go through a proper academy pipeline before hitting the streets.</p>
+      <p>We partner with other emergency services agencies including the LSFD, EMS, and civilian factions to create a living, breathing world of roleplay for our entire community.</p>
+      <p>Whether you're a veteran roleplayer or brand new to FiveM, BCSO has a place for you — as long as you bring dedication and respect for the craft.</p>
+    </div>
+    <div class="about-pillars">
+      <div class="pillar-card">
+        <div class="pillar-title">Professionalism</div>
+        <div class="pillar-desc">We hold ourselves to the same standards as real-world law enforcement roleplay. Proper radio etiquette, callsigns, and chain of command are core to who we are.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-title">Immersive Roleplay</div>
+        <div class="pillar-desc">From high-speed pursuits to complex investigative scenarios, our department runs detailed, immersive operations across the county.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-title">Community First</div>
+        <div class="pillar-desc">BCSO is built around a welcoming, drama-free community. We mentor new members, celebrate milestones, and grow together.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- RANKS -->
+<div class="ranks-section">
+<div class="ranks-inner">
+  <p class="section-eyebrow" id="ranks">Rank Structure</p>
+  <h2 class="section-title">Chain of Command</h2>
+  <p class="section-lead">Our rank structure follows a real-world sheriff's office hierarchy. Promotions are earned through performance, dedication, and time served.</p>
+
+  <div class="ranks-grid">
+    <div class="rank-card">
+      <div class="rank-badge command">CMD</div>
+      <div class="rank-name">Sheriff</div>
+      <div class="rank-desc">Leads the entire department. Final authority on all matters.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge command">CMD</div>
+      <div class="rank-name">Undersheriff</div>
+      <div class="rank-desc">Second in command. Oversees department operations daily.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge command">CMD</div>
+      <div class="rank-name">Assistant Sheriff</div>
+      <div class="rank-desc">Manages division leads and command-level decisions.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge">CAP</div>
+      <div class="rank-name">Captain</div>
+      <div class="rank-desc">Heads a specific division or unit within the department.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge">LT</div>
+      <div class="rank-name">Lieutenant</div>
+      <div class="rank-desc">Supervises sergeants and manages shift operations.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge">SGT</div>
+      <div class="rank-name">Sergeant</div>
+      <div class="rank-desc">Direct supervisor of patrol deputies on the field.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge">CPL</div>
+      <div class="rank-name">Corporal</div>
+      <div class="rank-desc">Senior deputy, field leader and trainer for junior staff.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge">DEP</div>
+      <div class="rank-name">Deputy II</div>
+      <div class="rank-desc">Experienced patrol deputy cleared for solo duty.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge">DEP</div>
+      <div class="rank-name">Deputy I</div>
+      <div class="rank-desc">Probationary patrol officer, partners with senior deputies.</div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-badge">CDT</div>
+      <div class="rank-name">Cadet</div>
+      <div class="rank-desc">Academy trainee. Not yet cleared for active patrol.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ROSTER -->
+<section id="roster">
+  <p class="section-eyebrow">Personnel</p>
+  <h2 class="section-title">Active Roster</h2>
+  <p class="section-lead">Our current department roster. All members are verified and active within the community.</p>
+
+  <div class="roster-wrap">
+    <table class="roster-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Rank</th>
+          <th>Division</th>
+          <th>Badge</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td><td>J. Harrington</td>
+          <td><span class="badge-rank badge-command">Sheriff</span></td>
+          <td>Command</td><td>#001</td>
+          <td><span class="badge-status-active">● Active</span></td>
+        </tr>
+        <tr>
+          <td>02</td><td>M. Caldwell</td>
+          <td><span class="badge-rank badge-command">Undersheriff</span></td>
+          <td>Command</td><td>#002</td>
+          <td><span class="badge-status-active">● Active</span></td>
+        </tr>
+        <tr>
+          <td>03</td><td>T. Reyes</td>
+          <td><span class="badge-rank badge-senior">Captain</span></td>
+          <td>Patrol</td><td>#010</td>
+          <td><span class="badge-status-active">● Active</span></td>
+        </tr>
+        <tr>
+          <td>04</td><td>S. Nguyen</td>
+          <td><span class="badge-rank badge-senior">Lieutenant</span></td>
+          <td>K9 Unit</td><td>#024</td>
+          <td><span class="badge-status-loa">◌ LOA</span></td>
+        </tr>
+        <tr>
+          <td>05</td><td>A. Fletcher</td>
+          <td><span class="badge-rank badge-senior">Sergeant</span></td>
+          <td>Detective Bureau</td><td>#031</td>
+          <td><span class="badge-status-active">● Active</span></td>
+        </tr>
+        <tr>
+          <td>06</td><td>D. Morales</td>
+          <td><span class="badge-rank badge-patrol">Corporal</span></td>
+          <td>Patrol</td><td>#045</td>
+          <td><span class="badge-status-active">● Active</span></td>
+        </tr>
+        <tr>
+          <td>07</td><td>R. Okafor</td>
+          <td><span class="badge-rank badge-patrol">Deputy II</span></td>
+          <td>Patrol</td><td>#062</td>
+          <td><span class="badge-status-active">● Active</span></td>
+        </tr>
+        <tr>
+          <td>08</td><td>C. Walsh</td>
+          <td><span class="badge-rank badge-patrol">Deputy I</span></td>
+          <td>Patrol</td><td>#078</td>
+          <td><span class="badge-status-active">● Active</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SOP / RULES -->
+<div class="rules-section">
+<div class="rules-inner" id="sop">
+  <p class="section-eyebrow">Standards & Conduct</p>
+  <h2 class="section-title">Rules & SOP</h2>
+  <p class="section-lead">All BCSO members are expected to uphold these standards at all times. Violations may result in demotion or removal.</p>
+
+  <div class="rules-grid">
+    <div class="rule-block">
+      <div class="rule-num">01</div>
+      <div class="rule-title">General Conduct</div>
+      <ul class="rule-items">
+        <li>Treat all players — civilian or LEO — with respect.</li>
+        <li>No OOC harassment, discrimination, or hate speech.</li>
+        <li>Always remain in character while on duty.</li>
+        <li>Do not abuse admin powers or department tools.</li>
+      </ul>
+    </div>
+    <div class="rule-block">
+      <div class="rule-num">02</div>
+      <div class="rule-title">Patrol Standards</div>
+      <ul class="rule-items">
+        <li>Wear department-approved uniform at all times.</li>
+        <li>Use proper 10-codes and radio discipline.</li>
+        <li>Cadets and Deputy I must partner with a senior deputy.</li>
+        <li>Lights & sirens only when legally justified.</li>
+      </ul>
+    </div>
+    <div class="rule-block">
+      <div class="rule-num">03</div>
+      <div class="rule-title">Use of Force</div>
+      <ul class="rule-items">
+        <li>Force must be proportional to the threat level.</li>
+        <li>Lethal force is last resort — exhaust all alternatives.</li>
+        <li>All officer-involved shootings require a report.</li>
+        <li>No RDM (random deathmatch) under any circumstance.</li>
+      </ul>
+    </div>
+    <div class="rule-block">
+      <div class="rule-num">04</div>
+      <div class="rule-title">Activity Requirements</div>
+      <ul class="rule-items">
+        <li>Minimum 4 hours of patrol per week.</li>
+        <li>LOA required for any absence over 7 days.</li>
+        <li>Attend mandatory monthly department meetings.</li>
+        <li>Training exercises participation is expected.</li>
+      </ul>
+    </div>
+    <div class="rule-block">
+      <div class="rule-num">05</div>
+      <div class="rule-title">Chain of Command</div>
+      <ul class="rule-items">
+        <li>All orders from superior ranks must be followed on duty.</li>
+        <li>Disputes go through proper HR channels — not public.</li>
+        <li>Do not go above your direct supervisor without reason.</li>
+        <li>Promotions and discipline are handled by command only.</li>
+      </ul>
+    </div>
+    <div class="rule-block">
+      <div class="rule-num">06</div>
+      <div class="rule-title">Vehicles & Equipment</div>
+      <ul class="rule-items">
+        <li>Only use department-approved vehicles while on duty.</li>
+        <li>No reckless driving unless in active pursuit.</li>
+        <li>Report vehicle damage via the department form.</li>
+        <li>Personal vehicles prohibited during official patrol.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- APPLICATION -->
+<section id="apply">
+  <p class="section-eyebrow">Join the Department</p>
+  <h2 class="section-title">Apply to BCSO</h2>
+  <p class="section-lead">Think you have what it takes? Submit your application below. All applicants will be reviewed within 48 hours.</p>
+
+  <div class="app-wrap">
+    <div class="app-info">
+      <h3>Requirements</h3>
+      <ul class="req-list">
+        <li>Must be 16 years or older</li>
+        <li>Active member of the FiveM server</li>
+        <li>No active bans or serious infractions</li>
+        <li>Working microphone required</li>
+        <li>Able to commit 4+ hours per week</li>
+        <li>Willingness to attend academy training</li>
+      </ul>
+
+      <h3>What to Expect</h3>
+      <p>After submitting, a recruiter will review your application and reach out via Discord within 48 hours. Accepted applicants will be invited to the BCSO academy before hitting patrol.</p>
+      <p>Applications are open on a rolling basis. We look for quality over quantity — give honest, detailed answers.</p>
+    </div>
+
+    <div>
+      <div class="app-form" id="appForm">
+        <div class="form-row">
+          <div class="field">
+            <label>First Name</label>
+            <input type="text" placeholder="John" />
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" placeholder="Smith" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Discord Username</label>
+          <input type="text" placeholder="username#0000" />
+        </div>
+        <div class="field">
+          <label>In-Game Name</label>
+          <input type="text" placeholder="Deputy John Smith" />
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Age</label>
+            <input type="number" min="16" max="99" placeholder="18" />
+          </div>
+          <div class="field">
+            <label>Time Zone</label>
+            <select>
+              <option value="">Select...</option>
+              <option>EST — Eastern</option>
+              <option>CST — Central</option>
+              <option>MST — Mountain</option>
+              <option>PST — Pacific</option>
+              <option>GMT / UTC</option>
+              <option>CET — Central Europe</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Previous RP / LEO Experience</label>
+          <textarea placeholder="Describe any prior law enforcement roleplay, departments you've been in, or relevant experience..."></textarea>
+        </div>
+        <div class="field">
+          <label>Why do you want to join BCSO?</label>
+          <textarea placeholder="Tell us what draws you to BCSO and what kind of deputy you aim to be..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitApp()">Submit Application</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        ✓ Application received! A recruiter will contact you within 48 hours via Discord.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- COMMUNITY -->
+<div class="community-section">
+  <div class="community-inner" id="community">
+    <p class="section-eyebrow">Stay Connected</p>
+    <h2 class="section-title">Join Our Community</h2>
+    <p class="section-lead" style="margin:0 auto;">All BCSO members and applicants operate out of our Discord server. Updates, training schedules, and department announcements are all posted there.</p>
+
+    <div class="discord-card">
+      <div class="discord-logo">🎙️</div>
+      <div class="discord-text">
+        <h3>BCSO Discord Server</h3>
+        <p>Join 200+ members in our official department server. Stay up to date on patrols, events, and department news.</p>
+      </div>
+      <a href="https://discord.gg/your-invite" class="discord-btn" target="_blank">Join Discord</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>Blaine County Sheriff's Office</span> — FiveM Roleplay Department</p>
+  <p style="margin-top:0.4rem;">This is a fictional roleplay community and is not affiliated with any real law enforcement agency.</p>
+</footer>
+
+<script>
+function submitApp() {
+  document.getElementById('appForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>
